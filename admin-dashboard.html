@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — KICK DAKAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0d0d;--surface:#161616;--card:#1e1e1e;--border:#2c2c2c;--border2:#383838;--accent:#ff3c00;--adim:rgba(255,60,0,0.1);--green:#00e676;--gdim:rgba(0,230,118,0.1);--yellow:#ffd600;--ydim:rgba(255,214,0,0.1);--blue:#448aff;--white:#f0f0f0;--gray:#666;--lg:#aaa;--mono:'DM Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;display:flex;min-height:100vh;}
+.login-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;}
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 40px;width:100%;max-width:400px;text-align:center;}
+.login-logo{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:4px;margin-bottom:6px;}
+.login-logo span{color:var(--accent);}
+.login-sub{font-size:11px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;font-family:var(--mono);margin-bottom:36px;}
+.login-label{display:block;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;text-align:left;}
+.login-input{width:100%;padding:13px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--white);font-size:15px;font-family:'Barlow',sans-serif;outline:none;transition:border-color 0.2s;margin-bottom:16px;}
+.login-input:focus{border-color:var(--accent);}
+.login-btn{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Barlow',sans-serif;margin-top:4px;}
+.login-err{color:var(--accent);font-size:13px;margin-top:12px;min-height:20px;font-weight:600;}
+.login-lock{font-size:10px;color:var(--gray);margin-top:8px;}
+.sidebar{width:230px;min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;}
+.sb-logo{padding:26px 22px 18px;border-bottom:1px solid var(--border);}
+.sb-logo-text{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;}
+.sb-logo-text span{color:var(--accent);}
+.sb-logo-sub{font-size:9px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;font-family:var(--mono);margin-top:3px;}
+.sb-section{padding:18px 14px 6px;font-size:9px;font-weight:800;letter-spacing:2px;color:var(--gray);text-transform:uppercase;font-family:var(--mono);}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;margin:2px 8px;border-radius:8px;color:var(--gray);font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;border:none;background:none;width:calc(100% - 16px);font-family:'Barlow',sans-serif;}
+.nav-item:hover{background:rgba(255,255,255,0.04);color:var(--white);}
+.nav-item.active{background:var(--adim);color:var(--accent);border:1px solid rgba(255,60,0,0.2);}
+.nb{margin-left:auto;background:var(--accent);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:50px;}
+.nb.green{background:var(--green);color:#000;}
+.sb-footer{margin-top:auto;padding:18px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;}
+.sb-link{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--lg);font-size:12px;font-weight:700;text-decoration:none;letter-spacing:1px;transition:all 0.2s;}
+.sb-link:hover{border-color:var(--accent);color:var(--white);}
+.logout-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--gray);font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer;font-family:'Barlow',sans-serif;width:100%;transition:all 0.2s;}
+.logout-btn:hover{border-color:var(--accent);color:var(--accent);}
+.main{margin-left:230px;flex:1;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 30px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:50;}
+.topbar-l h1{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.topbar-l p{font-size:10px;color:var(--gray);font-family:var(--mono);margin-top:2px;}
+.btn{padding:9px 18px;border-radius:6px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'Barlow',sans-serif;border:none;display:inline-flex;align-items:center;gap:7px;transition:all 0.2s;}
+.btn-accent{background:var(--accent);color:#fff;}
+.btn-accent:hover{opacity:0.88;transform:translateY(-1px);}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--lg);}
+.btn-ghost:hover{border-color:var(--white);color:var(--white);}
+.btn-green{background:var(--gdim);border:1px solid rgba(0,230,118,0.3);color:var(--green);}
+.btn-red{background:var(--adim);border:1px solid rgba(255,60,0,0.3);color:var(--accent);}
+.content{padding:28px 30px;}
+.page{display:none;}.page.active{display:block;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px;position:relative;overflow:hidden;}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.stat.o::before{background:var(--accent);}.stat.g::before{background:var(--green);}.stat.y::before{background:var(--yellow);}.stat.b::before{background:var(--blue);}
+.stat-lbl{font-size:10px;font-weight:800;letter-spacing:2px;color:var(--gray);text-transform:uppercase;font-family:var(--mono);margin-bottom:10px;}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:44px;line-height:1;margin-bottom:6px;}
+.stat.o .stat-val{color:var(--accent);}.stat.g .stat-val{color:var(--green);}.stat.y .stat-val{color:var(--yellow);}.stat.b .stat-val{color:var(--blue);}
+.stat-note{font-size:11px;color:var(--gray);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.box{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.box-hdr{padding:16px 20px;border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:1px;}
+.act-item{display:flex;align-items:flex-start;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);}
+.act-item:last-child{border-bottom:none;}
+.act-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.act-text{font-size:13px;flex:1;line-height:1.4;}
+.act-time{font-size:10px;color:var(--gray);font-family:var(--mono);flex-shrink:0;margin-top:2px;}
+.stock-row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);}
+.stock-row:last-child{border-bottom:none;}
+.sdot{width:8px;height:8px;border-radius:50%;}
+.search-row{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.search-wrap{position:relative;flex:1;min-width:180px;}
+.search-wrap::before{content:'⌕';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray);font-size:16px;pointer-events:none;}
+.tbl-search{padding:9px 14px 9px 34px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--white);font-size:13px;font-family:'Barlow',sans-serif;outline:none;transition:border-color 0.2s;width:100%;}
+.tbl-search:focus{border-color:var(--accent);}
+.tbl-search::placeholder{color:var(--gray);}
+.sel{padding:9px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--white);font-size:13px;font-family:'Barlow',sans-serif;outline:none;cursor:pointer;}
+.tbl-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:12px 18px;text-align:left;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-family:var(--mono);border-bottom:1px solid var(--border);background:var(--surface);white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:rgba(255,255,255,0.02);}
+tbody td{padding:12px 18px;font-size:13px;vertical-align:middle;}
+.td-img{width:44px;height:44px;background:linear-gradient(135deg,#1a1a1a,#252525);border-radius:7px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);flex-shrink:0;}
+.td-img img{width:100%;height:100%;object-fit:cover;border-radius:7px;}
+.prod-row{display:flex;align-items:center;gap:10px;}
+.prod-name{font-weight:700;font-size:13px;}
+.prod-brand{font-size:10px;color:var(--gray);font-family:var(--mono);}
+.price-cell{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--accent);}
+.badge{display:inline-block;padding:2px 9px;border-radius:50px;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.b-hot{background:var(--adim);color:var(--accent);border:1px solid rgba(255,60,0,0.3);}
+.b-new{background:var(--ydim);color:var(--yellow);border:1px solid rgba(255,214,0,0.3);}
+.b-rare{background:rgba(68,138,255,0.1);color:var(--blue);border:1px solid rgba(68,138,255,0.3);}
+.b-none{background:rgba(255,255,255,0.04);color:var(--gray);border:1px solid var(--border);}
+.stock-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;}
+.sdot-sm{width:5px;height:5px;border-radius:50%;}
+.row-acts{display:flex;gap:6px;}
+.act-btn{padding:5px 12px;border-radius:5px;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer;border:none;font-family:'Barlow',sans-serif;transition:all 0.2s;text-transform:uppercase;}
+.edit-btn{background:rgba(68,138,255,0.1);border:1px solid rgba(68,138,255,0.25);color:var(--blue);}
+.edit-btn:hover{background:rgba(68,138,255,0.2);}
+.del-btn{background:var(--adim);border:1px solid rgba(255,60,0,0.2);color:var(--accent);}
+.del-btn:hover{background:rgba(255,60,0,0.18);}
+.empty-row{text-align:center;padding:48px 20px;color:var(--gray);}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(6px);}
+.modal-ov.open{opacity:1;pointer-events:all;}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:18px;width:100%;max-width:600px;padding:34px;position:relative;transform:translateY(18px);transition:transform 0.3s;max-height:90vh;overflow-y:auto;}
+.modal-ov.open .modal-box{transform:translateY(0);}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.modal-x{position:absolute;top:18px;right:18px;background:var(--card);border:1px solid var(--border);color:var(--gray);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:800;transition:all 0.2s;}
+.modal-x:hover{color:var(--white);border-color:var(--white);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg.full{grid-column:1/-1;}
+.fl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-family:var(--mono);}
+.fi,.fsel,.fta{background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Barlow',sans-serif;font-size:14px;padding:10px 13px;outline:none;transition:border-color 0.2s;width:100%;}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--accent);}
+.fi::placeholder,.fta::placeholder{color:var(--gray);}
+.fta{resize:vertical;min-height:72px;}
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:var(--adim);}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.up-text{font-size:12px;color:var(--gray);}
+.up-text strong{color:var(--accent);}
+.prev-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}
+.prev-img{position:relative;aspect-ratio:1;border-radius:7px;overflow:hidden;background:var(--card);border:1px solid var(--border);}
+.prev-img img{width:100%;height:100%;object-fit:cover;}
+.prev-rm{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.75);border:none;color:#fff;width:18px;height:18px;border-radius:50%;cursor:pointer;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.sizes-grid{display:flex;flex-wrap:wrap;gap:7px;}
+.sz-tog{padding:7px 13px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:var(--gray);font-family:'Barlow',sans-serif;transition:all 0.2s;}
+.sz-tog:hover{border-color:var(--white);color:var(--white);}
+.sz-tog.on{border-color:var(--accent);color:var(--accent);background:var(--adim);}
+.form-acts{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;padding-top:18px;border-top:1px solid var(--border);}
+.cfm-ov{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.2s;backdrop-filter:blur(4px);}
+.cfm-ov.open{opacity:1;pointer-events:all;}
+.cfm-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;max-width:360px;width:100%;text-align:center;}
+.cfm-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;text-transform:uppercase;margin-bottom:10px;}
+.cfm-sub{color:var(--gray);font-size:13px;margin-bottom:22px;line-height:1.55;}
+.cfm-acts{display:flex;gap:10px;justify-content:center;}
+.info-box{background:rgba(68,138,255,0.06);border:1px solid rgba(68,138,255,0.2);border-radius:10px;padding:16px 18px;font-size:13px;color:var(--lg);line-height:1.65;margin-bottom:18px;}
+.info-box strong{color:var(--blue);}
+.tt-list{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+.tt-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px;}
+.tt-num{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--border);width:28px;flex-shrink:0;}
+.tt-info{flex:1;}
+.tt-label-text{font-weight:700;font-size:14px;margin-bottom:4px;}
+.tt-url-text{font-size:11px;color:var(--gray);font-family:var(--mono);word-break:break-all;}
+.tt-rm{background:var(--adim);border:1px solid rgba(255,60,0,0.25);color:var(--accent);padding:6px 12px;border-radius:6px;font-size:10px;font-weight:800;cursor:pointer;font-family:'Barlow',sans-serif;flex-shrink:0;}
+.tt-empty{text-align:center;padding:40px;color:var(--gray);font-size:14px;}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--card);border:1px solid var(--border);color:var(--white);padding:12px 22px;border-radius:9px;font-size:13px;font-weight:700;z-index:9999;opacity:0;transition:all 0.3s;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.ok{border-color:rgba(0,230,118,0.4);}.toast.err{border-color:rgba(255,60,0,0.4);}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .main{margin-left:0;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .two-col{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .content{padding:16px 14px;padding-bottom:80px;}
+  .topbar{padding:14px 16px;}
+  .topbar-l h1{font-size:16px;}
+  .mob-admin-nav{display:flex;}
+}
+@media(max-width:600px){
+  .stats-grid{grid-template-columns:1fr 1fr;gap:8px;}
+  .stat-val{font-size:32px;}
+  .stat{padding:14px;}
+  .stat-lbl{font-size:9px;}
+  table{display:block;overflow-x:auto;white-space:nowrap;}
+  .modal-box{padding:20px;margin:10px;}
+  .topbar{flex-wrap:wrap;gap:8px;}
+  .btn{padding:8px 12px;font-size:10px;}
+}
+.mob-admin-nav{
+  display:none;position:fixed;bottom:0;left:0;right:0;
+  background:var(--surface);border-top:1px solid var(--border);z-index:200;padding:4px 0;
+}
+.mob-nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+  background:none;border:none;color:var(--gray);cursor:pointer;
+  font-size:8px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;
+  font-family:'Barlow',sans-serif;padding:6px 2px;transition:color 0.2s;
+}
+.mob-nav-item.active{color:var(--accent);}
+.mob-nav-icon{font-size:20px;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">KICK<span>.</span>DKR</div>
+    <div class="login-sub">Admin Access</div>
+    <label class="login-label">Password</label>
+    <input type="password" class="login-input" id="pwInput" placeholder="Enter admin password">
+    <button class="login-btn" onclick="tryLogin()">🔐 Enter Dashboard</button>
+    <div class="login-err" id="loginErr"></div>
+    <div class="login-lock" id="loginLock"></div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-logo"><div class="sb-logo-text">KICK<span>.</span>DKR</div><div class="sb-logo-sub">Admin Panel</div></div>
+  <div class="sb-section">Main</div>
+  <button class="nav-item active" onclick="showPage('dashboard',this)">📊 Dashboard</button>
+  <button class="nav-item" onclick="showPage('products',this)">👟 Products <span class="nb" id="prodBadge">0</span></button>
+  <button class="nav-item" onclick="showPage('orders',this)">📦 Orders <span class="nb green" id="orderBadge">0</span></button>
+  <button class="nav-item" onclick="showPage('tiktok',this)">🎵 TikTok Videos</button>
+  <button class="nav-item" onclick="showPage('settings',this)">⚙️ Settings</button>
+  <div class="sb-footer">
+    <a href="index.html" target="_blank" class="sb-link">🌐 View Home</a>
+    <a href="catalog.html" target="_blank" class="sb-link">🗂 View Catalog</a>
+    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-l"><h1 id="pgTitle">Dashboard</h1><p id="pgSub">Overview — KICK.DKR</p></div>
+    <button class="btn btn-accent" onclick="openAddModal()">+ Add Product</button>
+  </div>
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat o"><div class="stat-lbl">Total Products</div><div class="stat-val" id="sTotalP">—</div><div class="stat-note" id="sInStock">loading...</div></div>
+        <div class="stat g"><div class="stat-lbl">Total Orders</div><div class="stat-val" id="sTotalO">—</div><div class="stat-note" id="sPending">loading...</div></div>
+        <div class="stat y"><div class="stat-lbl">Low Stock</div><div class="stat-val" id="sLow">—</div><div class="stat-note">3 or fewer pairs left</div></div>
+        <div class="stat b"><div class="stat-lbl">Out of Stock</div><div class="stat-val" id="sOut">—</div><div class="stat-note">need restocking</div></div>
+      </div>
+      <div class="two-col">
+        <div class="box"><div class="box-hdr">Recent Orders</div><div id="recentOrders"><div class="empty-row">Loading...</div></div></div>
+        <div class="box"><div class="box-hdr">Stock Summary</div><div id="stockSummary"><div class="empty-row">Loading...</div></div></div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="page" id="page-products">
+      <div class="search-row">
+        <div class="search-wrap"><input type="text" class="tbl-search" placeholder="Search products..." id="prodSearch" oninput="renderTable()"></div>
+        <select class="sel" id="brandSel" onchange="renderTable()"><option value="">All Brands</option><option>Nike</option><option>Jordan</option><option>Adidas</option><option>New Balance</option><option>Puma</option></select>
+        <select class="sel" id="stockSel" onchange="renderTable()"><option value="">All Stock</option><option value="in">In Stock</option><option value="low">Low Stock</option><option value="out">Out of Stock</option></select>
+      </div>
+      <div class="tbl-wrap"><table><thead><tr><th>Product</th><th>Price</th><th>Sizes</th><th>Qty</th><th>Tag</th><th>Stock</th><th>Actions</th></tr></thead><tbody id="prodTbody"><tr><td colspan="7"><div class="empty-row">Loading...</div></td></tr></tbody></table></div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="page" id="page-orders">
+      <div class="tbl-wrap"><table><thead><tr><th>Product</th><th>Size</th><th>Price</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody id="ordersTbody"><tr><td colspan="6"><div class="empty-row">Loading...</div></td></tr></tbody></table></div>
+    </div>
+
+    <!-- TIKTOK -->
+    <div class="page" id="page-tiktok">
+      <div style="max-width:600px;">
+        <div class="info-box"><strong>🎵 How to add your TikTok videos:</strong><br>1. Open TikTok, go to your video, tap <strong>Share → Copy Link</strong><br>2. Paste the link below and add a label + view count<br>3. Upload a screenshot of the video as the thumbnail<br>4. It shows on your site as a clean preview card</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+          <input class="fi" id="ttLabel" placeholder="Label e.g. Jordan 4 Drop">
+          <input class="fi" id="ttViews" placeholder="Views e.g. 238K views">
+        </div>
+        <input class="fi" id="ttUrl" placeholder="https://www.tiktok.com/@.../video/..." style="width:100%;margin-bottom:10px;">
+        <div style="margin-bottom:14px;">
+          <label class="fl" style="margin-bottom:8px;display:block;">Thumbnail — Screenshot of the video</label>
+          <div class="upload-zone" id="ttUploadZone" ondragover="ttDragOver(event)" ondrop="ttDrop(event)" ondragleave="ttDragLeave()">
+            <input type="file" id="ttImgInput" accept="image/*" onchange="ttHandleFile(event)">
+            <div class="up-text">📸 Click or drag to upload a thumbnail screenshot</div>
+          </div>
+          <div id="ttThumbPreview" style="margin-top:8px;"></div>
+        </div>
+        <button class="btn btn-accent" onclick="addTiktok()" style="width:100%;">➕ Add Video to Site</button>
+        <div class="tt-list" id="ttList"></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <div style="max-width:520px;display:flex;flex-direction:column;gap:18px;">
+        <div class="tbl-wrap" style="padding:24px;">
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:18px;">Store Info</h3>
+          <div class="form-grid">
+            <div class="fg"><label class="fl">Store Name</label><input class="fi" id="stName" placeholder="KICK.DKR"></div>
+            <div class="fg"><label class="fl">WhatsApp Number</label><input class="fi" id="stWA" placeholder="+221 XX XXX XX XX"></div>
+            <div class="fg"><label class="fl">TikTok Handle</label><input class="fi" id="stTT" placeholder="@kickdakar"></div>
+            <div class="fg"><label class="fl">Instagram Handle</label><input class="fi" id="stIG" placeholder="@kickdakar"></div>
+          </div>
+          <button class="btn btn-accent" style="margin-top:16px;" onclick="saveStoreInfo()">💾 Save Changes</button>
+        </div>
+        <div class="tbl-wrap" style="padding:24px;">
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Change Admin Password</h3>
+          <p style="color:var(--gray);font-size:13px;margin-bottom:16px;">Choose a strong password. Keep it secret.</p>
+          <div class="form-grid">
+            <div class="fg"><label class="fl">Current Password</label><input type="password" class="fi" id="pwCurrent" placeholder="Current password"></div>
+            <div class="fg"><label class="fl">New Password</label><input type="password" class="fi" id="pwNew" placeholder="New password (min 8 chars)"></div>
+          </div>
+          <button class="btn btn-accent" style="margin-top:16px;" onclick="changePassword()">🔒 Update Password</button>
+          <div id="pwMsg" style="font-size:12px;margin-top:10px;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-ov" id="prodModal">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeProdModal()">✕</button>
+    <div class="modal-title" id="prodModalTitle">Add Product</div>
+    <div class="form-grid">
+      <div class="fg"><label class="fl">Product Name *</label><input class="fi" id="fName" placeholder="Air Jordan 4 Retro"></div>
+      <div class="fg"><label class="fl">Brand *</label><select class="fsel" id="fBrand"><option>Nike</option><option>Jordan</option><option>Adidas</option><option>New Balance</option><option>Puma</option><option>Asics</option><option>Converse</option></select></div>
+      <div class="fg"><label class="fl">Price (USD) *</label><input class="fi" id="fPrice" placeholder="85" type="number" min="0"></div>
+      <div class="fg"><label class="fl">Quantity (pairs) *</label><input class="fi" id="fQty" placeholder="10" type="number" min="0"></div>
+      <div class="fg"><label class="fl">Tag</label><select class="fsel" id="fBadge"><option value="">None</option><option value="hot">Hot</option><option value="new">New</option><option value="rare">Rare</option></select></div>
+      <div class="fg"><label class="fl">Category</label><select class="fsel" id="fCategory"><option value="nike">Nike</option><option value="jordan">Jordan</option><option value="adidas">Adidas</option><option value="basket">Basketball</option><option value="rare">Rare</option><option value="jordan rare">Jordan Rare</option></select></div>
+      <div class="fg full"><label class="fl">Description</label><textarea class="fta" id="fDesc" placeholder="Describe the shoe..."></textarea></div>
+      <div class="fg full">
+        <label class="fl">Product Images (up to 5)</label>
+        <div class="upload-zone" id="uploadZone" ondragover="dragOver(event)" ondrop="doDrop(event)" ondragleave="dragLeave()">
+          <input type="file" id="imgInput" accept="image/*" multiple onchange="handleFiles(event)">
+          <div class="up-text">📸 Drag & drop or <strong>click to upload</strong> — JPG, PNG, WEBP</div>
+        </div>
+        <div class="prev-grid" id="prevGrid"></div>
+      </div>
+      <div class="fg full"><label class="fl">Available Sizes</label><div class="sizes-grid" id="sizesGrid"></div></div>
+    </div>
+    <div class="form-acts">
+      <button class="btn btn-ghost" onclick="closeProdModal()">Cancel</button>
+      <button class="btn btn-accent" id="saveBtn" onclick="saveProd()">💾 Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="cfm-ov" id="cfmOv">
+  <div class="cfm-box">
+    <div class="cfm-title">Delete Product?</div>
+    <div class="cfm-sub" id="cfmSub">This permanently removes the product.</div>
+    <div class="cfm-acts">
+      <button class="btn btn-ghost" onclick="closeCfm()">Cancel</button>
+      <button class="btn btn-red" onclick="doDel()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mob-admin-nav" id="mobAdminNav">
+  <button class="mob-nav-item active" onclick="showPage('dashboard',this)"><span class="mob-nav-icon">📊</span>Dashboard</button>
+  <button class="mob-nav-item" onclick="showPage('products',this)"><span class="mob-nav-icon">👟</span>Products</button>
+  <button class="mob-nav-item" onclick="showPage('orders',this)"><span class="mob-nav-icon">📦</span>Orders</button>
+  <button class="mob-nav-item" onclick="showPage('tiktok',this)"><span class="mob-nav-icon">🎵</span>TikTok</button>
+  <button class="mob-nav-item" onclick="showPage('settings',this)"><span class="mob-nav-icon">⚙️</span>Settings</button>
+</div>
+
+<div class="toast" id="toastEl"></div>
+
+<script>
+// ── SUPABASE ──
+const SUPA_URL='https://wnghzpuccwnmhzszsnng.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InduZ2h6cHVjY3dubWh6c3pzbm5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxMTAxMjIsImV4cCI6MjA5NTY4NjEyMn0.ykue5OjsUnaNkffv6Lut7NRnnA28lSk0FCyRDDr22jc';
+const H={'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY};
+
+async function dbGet(table,q=''){const qs=q?`${q}&order=created_at.asc`:'order=created_at.asc';const r=await fetch(`${SUPA_URL}/rest/v1/${table}?${qs}`,{headers:H});return r.json();}
+async function dbInsert(table,data){const r=await fetch(`${SUPA_URL}/rest/v1/${table}`,{method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(data)});return r.json();}
+async function dbUpdate(table,id,data){const r=await fetch(`${SUPA_URL}/rest/v1/${table}?id=eq.${id}`,{method:'PATCH',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(data)});return r.json();}
+async function dbDelete(table,id){await fetch(`${SUPA_URL}/rest/v1/${table}?id=eq.${id}`,{method:'DELETE',headers:H});}
+
+// ── SECURITY ──
+const PK='kickdkr_pw', SESSION='kickdkr_session';
+const DEFAULT_PW='kickdkr2025';
+let failCount=0, lockUntil=0;
+function getHash(pw){return btoa(pw+'_kicksalt_2025');}
+function getStoredPW(){return localStorage.getItem(PK)||getHash(DEFAULT_PW);}
+
+function tryLogin(){
+  const now=Date.now();
+  if(lockUntil>now){const rem=Math.ceil((lockUntil-now)/1000);document.getElementById('loginLock').textContent=`Locked for ${rem}s.`;return;}
+  const pw=document.getElementById('pwInput').value;
+  if(!pw){document.getElementById('loginErr').textContent='Enter a password.';return;}
+  if(getHash(pw)===getStoredPW()){
+    failCount=0;lockUntil=0;
+    sessionStorage.setItem(SESSION,'1');
+    document.getElementById('loginScreen').style.display='none';
+    initDashboard();
+  } else {
+    failCount++;
+    if(failCount>=5){lockUntil=Date.now()+60000;document.getElementById('loginLock').textContent='Locked for 60 seconds.';}
+    else{document.getElementById('loginErr').textContent=`Wrong password. ${5-failCount} attempt(s) left.`;}
+  }
+  document.getElementById('pwInput').value='';
+}
+
+function changePassword(){
+  const cur=document.getElementById('pwCurrent').value;
+  const nw=document.getElementById('pwNew').value;
+  const msg=document.getElementById('pwMsg');
+  if(getHash(cur)!==getStoredPW()){msg.style.color='var(--accent)';msg.textContent='Current password is wrong.';return;}
+  if(nw.length<8){msg.style.color='var(--accent)';msg.textContent='Minimum 8 characters.';return;}
+  localStorage.setItem(PK,getHash(nw));
+  msg.style.color='var(--green)';msg.textContent='Password updated!';
+  document.getElementById('pwCurrent').value='';document.getElementById('pwNew').value='';
+}
+function logout(){sessionStorage.removeItem(SESSION);location.reload();}
+
+window.addEventListener('load',()=>{
+  if(sessionStorage.getItem(SESSION)==='1'){document.getElementById('loginScreen').style.display='none';initDashboard();}
+  document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
+});
+
+// ── STATE ──
+const SIZES=['36','37','38','39','40','41','42','43','44','45','46'];
+let allProducts=[], allOrders=[], editId=null, uploadImgs=[], delId=null;
+
+// ── INIT ──
+async function initDashboard(){
+  await loadStoreInfo();
+  await renderDashboard();
+}
+
+// ── NAV ──
+function showPage(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item,.mob-nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if(el)el.classList.add('active');
+  // Sync both sidebar and mobile nav
+  document.querySelectorAll('.nav-item,.mob-nav-item').forEach(n=>{
+    if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes(`'${name}'`)) n.classList.add('active');
+  });
+  const titles={dashboard:'Dashboard',products:'Products',orders:'Orders',tiktok:'TikTok Videos',settings:'Settings'};
+  const subs={dashboard:'Overview — KICK.DKR',products:'Manage your sneaker catalog',orders:'Customer orders via WhatsApp',tiktok:'Manage your viral video feed',settings:'Store configuration'};
+  document.getElementById('pgTitle').textContent=titles[name]||name;
+  document.getElementById('pgSub').textContent=subs[name]||'';
+  if(name==='dashboard')renderDashboard();
+  if(name==='products')loadAndRenderProducts();
+  if(name==='orders')loadAndRenderOrders();
+  if(name==='tiktok')loadAndRenderTiktoks();
+  if(name==='settings')loadStoreInfo();
+}
+
+// ── DASHBOARD ──
+async function renderDashboard(){
+  allProducts=await dbGet('products');
+  allOrders=await dbGet('orders');
+  const inStock=allProducts.filter(p=>(p.quantity||0)>3).length;
+  const low=allProducts.filter(p=>{const q=p.quantity||0;return q>0&&q<=3;}).length;
+  const out=allProducts.filter(p=>(p.quantity||0)===0).length;
+  const pending=allOrders.filter(o=>o.status==='pending').length;
+  document.getElementById('sTotalP').textContent=allProducts.length;
+  document.getElementById('sInStock').textContent=inStock+' in stock';
+  document.getElementById('sTotalO').textContent=allOrders.length;
+  document.getElementById('sPending').textContent=pending+' pending';
+  document.getElementById('sLow').textContent=low;
+  document.getElementById('sOut').textContent=out;
+  document.getElementById('prodBadge').textContent=allProducts.length;
+  document.getElementById('orderBadge').textContent=pending;
+  const ro=document.getElementById('recentOrders');
+  if(!allOrders.length){ro.innerHTML='<div class="empty-row">No orders yet. Orders placed via WhatsApp appear here.</div>';}
+  else{ro.innerHTML=[...allOrders].reverse().slice(0,5).map(o=>`<div class="act-item"><div class="act-dot" style="background:${o.status==='delivered'?'var(--green)':o.status==='pending'?'var(--yellow)':'var(--blue)'};"></div><div class="act-text"><strong>${o.product}</strong> — Size ${o.size||'?'} — $${o.price}</div><div class="act-time">${o.status}</div></div>`).join('');}
+  document.getElementById('stockSummary').innerHTML=[
+    {label:'In Stock',count:inStock,color:'var(--green)'},
+    {label:'Low Stock (≤3)',count:low,color:'var(--yellow)'},
+    {label:'Out of Stock',count:out,color:'var(--accent)'},
+  ].map(s=>`<div class="stock-row"><div style="display:flex;align-items:center;gap:10px;"><div class="sdot" style="background:${s.color};"></div>${s.label}</div><span style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:${s.color};">${s.count}</span></div>`).join('');
+}
+
+// ── PRODUCTS ──
+async function loadAndRenderProducts(){
+  allProducts=await dbGet('products');
+  renderTable();
+}
+
+function renderTable(){
+  const search=(document.getElementById('prodSearch').value||'').toLowerCase();
+  const brand=document.getElementById('brandSel').value;
+  const stockF=document.getElementById('stockSel').value;
+  let filtered=allProducts.filter(p=>{
+    const sm=!search||p.name.toLowerCase().includes(search)||(p.brand||'').toLowerCase().includes(search);
+    const bm=!brand||p.brand===brand;
+    const qty=p.quantity||0;
+    const stm=!stockF||(stockF==='in'&&qty>3)||(stockF==='low'&&qty>0&&qty<=3)||(stockF==='out'&&qty===0);
+    return sm&&bm&&stm;
+  });
+  const tbody=document.getElementById('prodTbody');
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="7"><div class="empty-row">No products found</div></td></tr>`;return;}
+  tbody.innerHTML=filtered.map(p=>{
+    const qty=p.quantity||0;
+    let bh='',sh='';
+    if(p.badge==='hot')bh='<span class="badge b-hot">🔥 HOT</span>';
+    else if(p.badge==='new')bh='<span class="badge b-new">✨ NEW</span>';
+    else if(p.badge==='rare')bh='<span class="badge b-rare">💎 RARE</span>';
+    else bh='<span class="badge b-none">—</span>';
+    if(qty===0)sh='<span class="stock-pill"><span class="sdot-sm" style="background:var(--accent);"></span>Out of Stock</span>';
+    else if(qty<=3)sh=`<span class="stock-pill"><span class="sdot-sm" style="background:var(--yellow);"></span>Low (${qty})</span>`;
+    else sh=`<span class="stock-pill"><span class="sdot-sm" style="background:var(--green);"></span>In Stock</span>`;
+    const imgs=p.images||[];
+    const img=imgs.length?`<img src="${imgs[0]}" alt="">`:'';
+    return `<tr><td><div class="prod-row"><div class="td-img">${img}</div><div><div class="prod-name">${p.name}</div><div class="prod-brand">${p.brand}</div></div></div></td><td><div class="price-cell">$${p.price}</div></td><td style="color:var(--gray);font-size:11px;font-family:var(--mono);">${(p.sizes||[]).join(', ')}</td><td style="font-family:'Bebas Neue',sans-serif;font-size:20px;">${qty}</td><td>${bh}</td><td>${sh}</td><td><div class="row-acts"><button class="act-btn edit-btn" onclick="openEdit(${p.id})">Edit</button><button class="act-btn del-btn" onclick="openDel(${p.id})">Del</button></div></td></tr>`;
+  }).join('');
+}
+
+// ── ORDERS ──
+async function loadAndRenderOrders(){
+  allOrders=await dbGet('orders');
+  const tbody=document.getElementById('ordersTbody');
+  if(!allOrders.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty-row">No orders yet.</div></td></tr>';return;}
+  tbody.innerHTML=[...allOrders].reverse().map(o=>`<tr><td><strong>${o.product}</strong></td><td style="font-family:var(--mono);">${o.size||'—'}</td><td class="price-cell">$${o.price}</td><td><span style="color:${o.status==='delivered'?'var(--green)':o.status==='pending'?'var(--yellow)':'var(--blue)'};">${o.status}</span></td><td style="font-size:11px;color:var(--gray);">${new Date(o.created_at).toLocaleDateString()}</td><td><select onchange="updateOrderStatus(${o.id},this.value)" style="background:var(--card);border:1px solid var(--border);color:var(--white);padding:5px 8px;border-radius:6px;font-family:'Barlow',sans-serif;font-size:11px;outline:none;"><option ${o.status==='pending'?'selected':''}>pending</option><option ${o.status==='confirmed'?'selected':''}>confirmed</option><option ${o.status==='delivered'?'selected':''}>delivered</option></select></td></tr>`).join('');
+}
+
+async function updateOrderStatus(id,status){
+  await dbUpdate('orders',id,{status});
+  toast('Order status updated','ok');
+  loadAndRenderOrders();
+}
+
+// ── PRODUCT MODAL ──
+function buildSizes(sel=[]){
+  document.getElementById('sizesGrid').innerHTML=SIZES.map(s=>`<button type="button" class="sz-tog ${sel.includes(s)?'on':''}" onclick="this.classList.toggle('on')">${s}</button>`).join('');
+}
+function getSelSizes(){return Array.from(document.querySelectorAll('.sz-tog.on')).map(b=>b.textContent.trim());}
+
+function openAddModal(){
+  editId=null;uploadImgs=[];
+  document.getElementById('prodModalTitle').textContent='Add Product';
+  ['fName','fPrice','fQty','fDesc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fBrand').value='Nike';
+  document.getElementById('fBadge').value='';
+  document.getElementById('fCategory').value='nike';
+  buildSizes([]);
+  document.getElementById('prevGrid').innerHTML='';
+  document.getElementById('prodModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function openEdit(id){
+  const p=allProducts.find(x=>x.id===id);if(!p)return;
+  editId=id;uploadImgs=p.images?[...p.images]:[];
+  document.getElementById('prodModalTitle').textContent='Edit Product';
+  document.getElementById('fName').value=p.name||'';
+  document.getElementById('fPrice').value=p.price||'';
+  document.getElementById('fQty').value=p.quantity||0;
+  document.getElementById('fBrand').value=p.brand||'Nike';
+  document.getElementById('fBadge').value=p.badge||'';
+  document.getElementById('fCategory').value=p.category||'nike';
+  document.getElementById('fDesc').value=p.description||'';
+  buildSizes(p.sizes||[]);
+  renderPreviews();
+  document.getElementById('prodModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeProdModal(){document.getElementById('prodModal').classList.remove('open');document.body.style.overflow='';}
+
+async function saveProd(){
+  const name=document.getElementById('fName').value.trim();
+  const price=document.getElementById('fPrice').value.trim();
+  const qty=parseInt(document.getElementById('fQty').value)||0;
+  if(!name||!price){toast('Name and price required','err');return;}
+  const sizes=getSelSizes();
+  if(!sizes.length){toast('Select at least one size','err');return;}
+  const btn=document.getElementById('saveBtn');
+  btn.innerHTML='<span class="spinner"></span>Saving...';btn.disabled=true;
+  const data={name,price,brand:document.getElementById('fBrand').value,badge:document.getElementById('fBadge').value,category:document.getElementById('fCategory').value,description:document.getElementById('fDesc').value,quantity:qty,images:uploadImgs,sizes};
+  try{
+    if(editId){await dbUpdate('products',editId,data);toast('✅ Product updated','ok');}
+    else{await dbInsert('products',data);toast('✅ Product added','ok');}
+    closeProdModal();await loadAndRenderProducts();await renderDashboard();
+  }catch(e){toast('Error saving product','err');}
+  btn.innerHTML='💾 Save Product';btn.disabled=false;
+}
+
+// ── DELETE ──
+function openDel(id){const p=allProducts.find(x=>x.id===id);delId=id;document.getElementById('cfmSub').textContent=`This will permanently remove "${p?p.name:'this product'}" from your store.`;document.getElementById('cfmOv').classList.add('open');}
+function closeCfm(){document.getElementById('cfmOv').classList.remove('open');delId=null;}
+async function doDel(){if(!delId)return;await dbDelete('products',delId);closeCfm();await loadAndRenderProducts();await renderDashboard();toast('Product deleted','err');}
+
+// ── IMAGE UPLOAD ──
+function handleFiles(e){processFiles(e.target.files);}
+function dragOver(e){e.preventDefault();document.getElementById('uploadZone').classList.add('drag');}
+function dragLeave(){document.getElementById('uploadZone').classList.remove('drag');}
+function doDrop(e){e.preventDefault();document.getElementById('uploadZone').classList.remove('drag');processFiles(e.dataTransfer.files);}
+async function compressImage(file, maxWidth=1200, quality=0.75){
+  return new Promise(resolve=>{
+    const img=new Image();
+    const url=URL.createObjectURL(file);
+    img.onload=()=>{
+      URL.revokeObjectURL(url);
+      const canvas=document.createElement('canvas');
+      let w=img.width, h=img.height;
+      if(w>maxWidth){h=Math.round(h*maxWidth/w);w=maxWidth;}
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      canvas.toBlob(blob=>resolve(new File([blob],file.name,{type:'image/jpeg'})),'image/jpeg',quality);
+    };
+    img.src=url;
+  });
+}
+
+async function uploadToStorage(file){
+  toast('Compressing image...','');
+  const compressed=await compressImage(file);
+  const sizeBefore=(file.size/1024).toFixed(0);
+  const sizeAfter=(compressed.size/1024).toFixed(0);
+  console.log(`Compressed: ${sizeBefore}KB → ${sizeAfter}KB`);
+  const ext='jpg';
+  const filename=`${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  toast('Uploading...','');
+  const r=await fetch(`${SUPA_URL}/storage/v1/object/product-images/${filename}`,{
+    method:'POST',
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'image/jpeg','x-upsert':'true'},
+    body:compressed
+  });
+  if(!r.ok){const e=await r.text();console.error('Upload error:',e);return null;}
+  return `${SUPA_URL}/storage/v1/object/public/product-images/${filename}`;
+}
+
+async function processFiles(files){
+  const rem=5-uploadImgs.length;
+  const toUpload=Array.from(files).filter(f=>f.type.startsWith('image/')).slice(0,rem);
+  if(!toUpload.length)return;
+  toast('Uploading images...','');
+  for(const f of toUpload){
+    const url=await uploadToStorage(f);
+    if(url){uploadImgs.push(url);renderPreviews();}
+    else toast('One image failed to upload','err');
+  }
+  toast('✅ Images uploaded','ok');
+}
+
+function renderPreviews(){document.getElementById('prevGrid').innerHTML=uploadImgs.map((src,i)=>`<div class="prev-img"><img src="${src}"><button class="prev-rm" onclick="removeImg(${i})">✕</button></div>`).join('');}
+function removeImg(i){uploadImgs.splice(i,1);renderPreviews();}
+
+// ── TIKTOK ──
+let ttThumbnail='';
+async function loadAndRenderTiktoks(){
+  const tts=await dbGet('tiktoks');
+  const list=document.getElementById('ttList');
+  if(!tts.length){list.innerHTML='<div class="tt-empty">No videos added yet.</div>';return;}
+  list.innerHTML=tts.map((t,i)=>`<div class="tt-item">${t.thumbnail?`<img src="${t.thumbnail}" style="width:44px;height:78px;object-fit:cover;border-radius:6px;border:1px solid var(--border);flex-shrink:0;">`:'<div style="width:44px;height:78px;background:var(--bg);border-radius:6px;border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;">🎵</div>'}<div class="tt-num">${i+1}</div><div class="tt-info"><div class="tt-label-text">${t.label||'Video '+(i+1)}</div>${t.views?`<div style="font-size:11px;color:var(--green);font-weight:700;margin-bottom:4px;">👁 ${t.views}</div>`:''}<div class="tt-url-text">${t.url}</div></div><button class="tt-rm" onclick="removeTT(${t.id})">Remove</button></div>`).join('');
+}
+
+async function ttUploadThumb(file){
+  const url=await uploadToStorage(file);
+  if(url){ttThumbnail=url;document.getElementById('ttThumbPreview').innerHTML=`<img src="${url}" style="width:80px;height:140px;object-fit:cover;border-radius:8px;border:1px solid var(--border);">`;}
+  else toast('Thumbnail upload failed','err');
+}
+function ttHandleFile(e){const f=e.target.files[0];if(!f||!f.type.startsWith('image/'))return;ttUploadThumb(f);}
+function ttDragOver(e){e.preventDefault();document.getElementById('ttUploadZone').classList.add('drag');}
+function ttDragLeave(){document.getElementById('ttUploadZone').classList.remove('drag');}
+function ttDrop(e){e.preventDefault();document.getElementById('ttUploadZone').classList.remove('drag');const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))ttUploadThumb(f);}
+
+async function addTiktok(){
+  const label=document.getElementById('ttLabel').value.trim();
+  const url=document.getElementById('ttUrl').value.trim();
+  const views=document.getElementById('ttViews').value.trim();
+  if(!url){toast('Paste a TikTok URL first','err');return;}
+  if(!url.includes('tiktok.com')){toast('Must be a TikTok link','err');return;}
+  await dbInsert('tiktoks',{label,url,views,thumbnail:ttThumbnail});
+  document.getElementById('ttLabel').value='';document.getElementById('ttUrl').value='';document.getElementById('ttViews').value='';
+  document.getElementById('ttThumbPreview').innerHTML='';document.getElementById('ttImgInput').value='';ttThumbnail='';
+  await loadAndRenderTiktoks();toast('✅ Video added to your site','ok');
+}
+async function removeTT(id){await dbDelete('tiktoks',id);await loadAndRenderTiktoks();toast('Video removed','err');}
+
+// ── STORE INFO ──
+async function loadStoreInfo(){
+  try{
+    const r=await fetch(`${SUPA_URL}/rest/v1/store_info?select=*&order=id.asc&limit=1`,{headers:H});
+    const rows=await r.json();
+    if(rows&&rows.length){
+      const info=rows[0];
+      document.getElementById('stName').value=info.name||'';
+      document.getElementById('stWA').value=info.wa||'';
+      document.getElementById('stTT').value=info.tt||'';
+      document.getElementById('stIG').value=info.ig||'';
+    }
+  }catch(e){console.error('loadStoreInfo error:',e);}
+}
+
+async function saveStoreInfo(){
+  const name=document.getElementById('stName').value.trim();
+  const wa=document.getElementById('stWA').value.trim();
+  const tt=document.getElementById('stTT').value.trim();
+  const ig=document.getElementById('stIG').value.trim();
+  if(!name){toast('Store name cannot be empty','err');return;}
+  try{
+    const r=await fetch(`${SUPA_URL}/rest/v1/store_info?id=eq.1`,{
+      method:'PATCH',
+      headers:{...H,'Prefer':'return=representation'},
+      body:JSON.stringify({name,wa,tt,ig,updated_at:new Date().toISOString()})
+    });
+    const result=await r.json();
+    if(r.ok&&result.length){
+      toast('✅ Store info saved! All pages updated.','ok');
+    } else {
+      console.error('Patch failed:',result);
+      toast('❌ Save failed — check console','err');
+    }
+  }catch(e){
+    console.error('saveStoreInfo error:',e);
+    toast('❌ Error saving','err');
+  }
+}
+
+// ── TOAST ──
+function toast(msg,type=''){const el=document.getElementById('toastEl');el.textContent=msg;el.className=`toast ${type} show`;setTimeout(()=>el.classList.remove('show'),3000);}
+
+document.getElementById('prodModal').addEventListener('click',e=>{if(e.target===document.getElementById('prodModal'))closeProdModal();});
+document.getElementById('cfmOv').addEventListener('click',e=>{if(e.target===document.getElementById('cfmOv'))closeCfm();});
+</script>
+</body>
+</html>

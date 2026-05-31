@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — KICK DAKAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0a0a0a;--dark:#111;--card:#181818;--border:#2a2a2a;--accent:#ff3c00;--accent2:#ffcc00;--white:#f5f5f5;--gray:#888;--lightgray:#ccc;--green:#25D366;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--dark);}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:4px;color:var(--white);text-decoration:none;}
+.nav-logo span{color:var(--accent);}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--white);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.btn-admin{background:transparent;color:var(--gray);padding:8px 16px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:2px;text-decoration:none;text-transform:uppercase;border:1px solid var(--border);transition:all 0.2s;}
+.btn-admin:hover{border-color:var(--white);color:var(--white);}
+.btn-wa{background:var(--green);color:#000;padding:9px 22px;border-radius:50px;font-size:11px;font-weight:800;letter-spacing:2px;text-decoration:none;text-transform:uppercase;transition:all 0.2s;}
+.btn-wa:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,0.35);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;}
+.mob-menu{position:fixed;inset:0;background:var(--black);z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);}
+.mob-menu.open{transform:translateX(0);}
+.mob-menu a{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:4px;color:var(--white);text-decoration:none;}
+.mob-menu a:hover{color:var(--accent);}
+.mob-close{position:absolute;top:24px;right:24px;background:none;border:1px solid var(--border);color:var(--gray);width:40px;height:40px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* PAGE HEADER */
+.page-header{padding:140px 48px 80px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.page-header::before{content:'ABOUT';position:absolute;font-family:'Bebas Neue',sans-serif;font-size:240px;color:rgba(255,255,255,0.02);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;}
+.ph-inner{position:relative;z-index:2;max-width:700px;}
+.ph-tag{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+.ph-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,8vw,110px);letter-spacing:2px;line-height:0.9;margin-bottom:24px;}
+.ph-sub{color:var(--gray);font-size:16px;line-height:1.75;max-width:560px;}
+
+/* STORY SECTION */
+.story{padding:100px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.story-content .label{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+.story-content h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,5vw,72px);letter-spacing:2px;line-height:1;margin-bottom:24px;}
+.story-content p{color:var(--lightgray);font-size:16px;line-height:1.8;margin-bottom:18px;}
+.story-visual{display:flex;flex-direction:column;gap:16px;}
+.story-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;position:relative;overflow:hidden;transition:border-color 0.3s;}
+.story-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--accent);border-radius:3px 0 0 3px;}
+.story-card:hover{border-color:rgba(255,60,0,0.3);}
+.sc-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--border);line-height:1;margin-bottom:6px;}
+.sc-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.sc-text{color:var(--gray);font-size:14px;line-height:1.6;}
+
+/* VALUES */
+.values{padding:100px 48px;background:var(--dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.sec-tag{display:inline-block;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+.sec-h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,6vw,76px);letter-spacing:2px;line-height:1;margin-bottom:14px;}
+.sec-sub{color:var(--gray);font-size:15px;line-height:1.65;max-width:480px;margin-bottom:48px;}
+.values-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;}
+.val-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px;transition:all 0.3s;position:relative;overflow:hidden;}
+.val-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
+.val-card:hover::before{transform:scaleX(1);}
+.val-card:hover{border-color:rgba(255,60,0,0.2);}
+.val-icon{font-size:32px;margin-bottom:16px;}
+.val-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.val-desc{color:var(--gray);font-size:14px;line-height:1.65;}
+
+/* STATS BAND */
+.stats-band{padding:80px 48px;display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center;border-bottom:1px solid var(--border);}
+.band-num{font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--accent);line-height:1;margin-bottom:8px;}
+.band-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray);}
+
+/* TEAM */
+.team{padding:100px 48px;}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;margin-top:48px;}
+.team-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all 0.3s;text-align:center;}
+.team-card:hover{border-color:rgba(255,60,0,0.3);transform:translateY(-4px);}
+.team-avatar{width:100%;height:180px;background:linear-gradient(135deg,#1a1a1a,#252525);display:flex;align-items:center;justify-content:center;font-size:64px;border-bottom:1px solid var(--border);}
+.team-info{padding:20px;}
+.team-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.team-role{font-size:11px;color:var(--accent);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.team-desc{font-size:13px;color:var(--gray);line-height:1.6;}
+
+/* CTA */
+.cta-sec{background:var(--accent);padding:80px 48px;text-align:center;position:relative;overflow:hidden;}
+.cta-sec::before{content:'KICKS';position:absolute;font-family:'Bebas Neue',sans-serif;font-size:300px;color:rgba(255,255,255,0.05);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;}
+.cta-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,96px);color:#fff;letter-spacing:3px;position:relative;margin-bottom:12px;}
+.cta-p{color:rgba(255,255,255,0.78);font-size:17px;margin-bottom:36px;position:relative;}
+.cta-wa{display:inline-flex;align-items:center;gap:10px;background:#fff;color:#000;padding:18px 48px;border-radius:50px;font-size:13px;font-weight:800;letter-spacing:2px;text-decoration:none;text-transform:uppercase;position:relative;transition:all 0.3s;}
+.cta-wa:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.25);}
+
+/* FOOTER */
+footer{background:#080808;border-top:1px solid var(--border);padding:60px 48px 30px;}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
+.ft-logo{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:4px;margin-bottom:14px;}
+.ft-logo span{color:var(--accent);}
+.ft-p{color:var(--gray);font-size:14px;line-height:1.7;max-width:250px;margin-bottom:22px;}
+.ft-socials{display:flex;gap:10px;}
+.ft-soc{width:38px;height:38px;background:var(--card);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:16px;text-decoration:none;transition:all 0.2s;}
+.ft-soc:hover{border-color:var(--accent);color:var(--accent);}
+.ft-col h4{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.ft-col ul a{color:var(--gray);text-decoration:none;font-size:14px;transition:color 0.2s;}
+.ft-col ul a:hover{color:var(--white);}
+.ft-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.ft-bottom p{color:var(--gray);font-size:12px;}
+.ft-bottom span{color:var(--accent);}
+
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:999;background:var(--green);color:#000;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;text-decoration:none;box-shadow:0 8px 28px rgba(37,211,102,0.4);transition:all 0.3s;}
+.wa-float:hover{transform:scale(1.1);}
+.wa-pulse{position:absolute;inset:-4px;border-radius:50%;background:rgba(37,211,102,0.25);animation:waPulse 2s ease-out infinite;}
+@keyframes waPulse{0%{transform:scale(1);opacity:0.6;}100%{transform:scale(1.55);opacity:0;}}
+
+@media(max-width:960px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .btn-admin,.btn-wa{display:none;}
+  .page-header{padding:120px 24px 60px;}
+  .story{grid-template-columns:1fr;gap:40px;padding:60px 24px;}
+  .values{padding:60px 24px;}
+  .stats-band{grid-template-columns:repeat(2,1fr);padding:60px 24px;gap:24px;}
+  .team{padding:60px 24px;}
+  .cta-sec{padding:60px 24px;}
+  footer{padding:50px 24px 24px;}
+  .ft-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  .stats-band{grid-template-columns:1fr 1fr;}
+  .ft-grid{grid-template-columns:1fr;}
+  .band-num{font-size:48px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">KICK<span>.</span>DKR</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="catalog.html">Catalog</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="delivery.html">Delivery</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="admin-dashboard.html" target="_blank" class="btn-admin">Admin</a>
+    <a href="https://wa.me/221XXXXXXXXX" target="_blank" class="btn-wa">📱 Order Now</a>
+    <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close" id="mobClose">✕</button>
+  <a href="index.html" onclick="closeMob()">Home</a>
+  <a href="catalog.html" onclick="closeMob()">Catalog</a>
+  <a href="about.html" onclick="closeMob()">About</a>
+  <a href="faq.html" onclick="closeMob()">FAQ</a>
+  <a href="delivery.html" onclick="closeMob()">Delivery</a>
+  <a href="https://wa.me/221XXXXXXXXX" target="_blank" style="background:var(--green);color:#000;padding:14px 38px;border-radius:50px;font-size:26px;">📱 Order</a>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="ph-inner">
+    <div class="ph-tag">// Our Story</div>
+    <h1 class="ph-h1">WHO WE ARE</h1>
+    <p class="ph-sub">We are KICK DAKAR — a sneaker business born out of passion for rare, original pairs and a vision to bring exclusive footwear culture to Senegal.</p>
+  </div>
+</div>
+
+<!-- STORY -->
+<section class="story">
+  <div class="story-content">
+    <div class="label">// The Beginning</div>
+    <h2>STARTED WITH A PASSION FOR KICKS</h2>
+    <p>KICK DAKAR started as a simple idea: bring the world's most exclusive sneakers to Dakar. No fakes. No compromises. Just rare, original pairs at fair prices.</p>
+    <p>What began as a TikTok page sharing sneaker content quickly turned into a full business. With over 19,000 followers and hundreds of thousands of views, the demand was clear — Dakar wanted exclusive kicks.</p>
+    <p>Today we source directly from trusted suppliers around the world to bring you the most sought-after Nikes, Jordans, Adidas and more — delivered straight to your door.</p>
+  </div>
+  <div class="story-visual">
+    <div class="story-card">
+      <div class="sc-num">01</div>
+      <div class="sc-title">We Source Globally</div>
+      <div class="sc-text">Our pairs come from trusted suppliers in key sneaker markets. Every pair is verified authentic before it reaches you.</div>
+    </div>
+    <div class="story-card">
+      <div class="sc-num">02</div>
+      <div class="sc-title">We Sell Locally</div>
+      <div class="sc-text">Based in Dakar, we know our customers personally. Fast delivery, real conversations, no corporate nonsense.</div>
+    </div>
+    <div class="story-card">
+      <div class="sc-num">03</div>
+      <div class="sc-title">We Go Viral</div>
+      <div class="sc-text">Our TikTok content has generated over 700K views. We don't just sell sneakers — we build culture.</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div><div class="band-num">19K+</div><div class="band-label">TikTok Followers</div></div>
+  <div><div class="band-num">700K+</div><div class="band-label">Total Views</div></div>
+  <div><div class="band-num">100%</div><div class="band-label">Authentic Pairs</div></div>
+  <div><div class="band-num">24H</div><div class="band-label">Delivery in Dakar</div></div>
+</div>
+
+<!-- VALUES -->
+<section class="values">
+  <div class="sec-tag">// What We Stand For</div>
+  <h2 class="sec-h2">OUR VALUES</h2>
+  <p class="sec-sub">Everything we do is built on these four principles.</p>
+  <div class="values-grid">
+    <div class="val-card"><div class="val-icon">✅</div><div class="val-title">Authenticity</div><div class="val-desc">Every single pair we sell is 100% original. We never carry fakes and never will. Our reputation depends on it.</div></div>
+    <div class="val-card"><div class="val-icon">🤝</div><div class="val-title">Transparency</div><div class="val-desc">Clear pricing, honest stock levels, and real delivery timelines. No hidden fees, no surprises.</div></div>
+    <div class="val-card"><div class="val-icon">⚡</div><div class="val-title">Speed</div><div class="val-desc">Same-day and next-day delivery in Dakar. We move fast because your time matters.</div></div>
+    <div class="val-card"><div class="val-icon">🌍</div><div class="val-title">Community</div><div class="val-desc">We are building a sneaker culture in Senegal. Every purchase supports a local business with a global vision.</div></div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team">
+  <div class="sec-tag">// The People Behind It</div>
+  <h2 class="sec-h2">THE TEAM</h2>
+  <p class="sec-sub">A small, passionate crew obsessed with sneakers and customer satisfaction.</p>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar">👟</div>
+      <div class="team-info">
+        <div class="team-name">Founder & CEO</div>
+        <div class="team-role">Sneaker Curator</div>
+        <div class="team-desc">The vision behind KICK DAKAR. Sources every pair personally and knows the market inside out.</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">📦</div>
+      <div class="team-info">
+        <div class="team-name">Operations</div>
+        <div class="team-role">Delivery & Logistics</div>
+        <div class="team-desc">Makes sure every order gets packed right and delivered fast. The backbone of the business.</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">🎵</div>
+      <div class="team-info">
+        <div class="team-name">Content Creator</div>
+        <div class="team-role">TikTok & Social</div>
+        <div class="team-desc">The mind behind the viral TikTok content. Turns every new drop into a moment.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-sec">
+  <h2 class="cta-h">LET'S TALK KICKS</h2>
+  <p class="cta-p">Have a question or want to place an order? We're one message away.</p>
+  <a href="https://wa.me/221XXXXXXXXX?text=Hey!%20I%20want%20to%20know%20more%20about%20KICK%20DAKAR!" target="_blank" class="cta-wa">📱 Message Us on WhatsApp</a>
+</div>
+
+<footer>
+  <div class="ft-grid">
+    <div>
+      <div class="ft-logo">KICK<span>.</span>DKR</div>
+      <p class="ft-p">Exclusive and original sneakers in Senegal. TikTok to order to delivery.</p>
+      <div class="ft-socials">
+        <a href="https://tiktok.com/@kickdakar" target="_blank" class="ft-soc tt-link">🎵</a>
+        <a href="https://instagram.com/kickdakar" target="_blank" class="ft-soc ig-link">📸</a>
+        <a href="https://wa.me/221XXXXXXXXX" target="_blank" class="ft-soc">💬</a>
+      </div>
+    </div>
+    <div class="ft-col"><h4>Navigate</h4><ul><li><a href="index.html">Home</a></li><li><a href="catalog.html">Catalog</a></li><li><a href="about.html">About</a></li><li><a href="faq.html">FAQ</a></li><li><a href="delivery.html">Delivery</a></li></ul></div>
+    <div class="ft-col"><h4>Brands</h4><ul><li><a href="catalog.html">Nike</a></li><li><a href="catalog.html">Jordan</a></li><li><a href="catalog.html">Adidas</a></li><li><a href="catalog.html">New Balance</a></li></ul></div>
+    <div class="ft-col"><h4>Help</h4><ul><li><a href="delivery.html">Delivery Info</a></li><li><a href="faq.html">FAQ</a></li><li><a href="https://wa.me/221XXXXXXXXX" target="_blank">Contact Us</a></li></ul></div>
+  </div>
+  <div class="ft-bottom"><p>2025 <span>KICK.DKR</span> — All rights reserved</p><p>Built for sneaker lovers in Dakar</p></div>
+</footer>
+
+<a href="https://wa.me/221XXXXXXXXX?text=Hey!" target="_blank" class="wa-float"><div class="wa-pulse"></div>💬</a>
+
+<script>
+document.getElementById('ham').addEventListener('click',()=>{document.getElementById('mobMenu').classList.add('open');document.body.style.overflow='hidden';});
+document.getElementById('mobClose').addEventListener('click',closeMob);
+function closeMob(){document.getElementById('mobMenu').classList.remove('open');document.body.style.overflow='';}
+</script>
+
+
+
+
+<script>
+// ── SUPABASE STORE INFO ──
+const SUPA_URL='https://wnghzpuccwnmhzszsnng.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InduZ2h6cHVjY3dubWh6c3pzbm5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxMTAxMjIsImV4cCI6MjA5NTY4NjEyMn0.ykue5OjsUnaNkffv6Lut7NRnnA28lSk0FCyRDDr22jc';
+(async function(){
+  try{
+    const r=await fetch(`${SUPA_URL}/rest/v1/store_info?select=*&limit=1`,{headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}});
+    const rows=await r.json();
+    if(!rows||!rows.length)return;
+    const info=rows[0];
+    if(info.name){
+      document.querySelectorAll('.nav-logo,.ft-logo,.footer-logo').forEach(el=>{
+        const parts=info.name.split('.');
+        el.innerHTML=parts.length===2?parts[0].toUpperCase()+'<span style="color:var(--accent);">.</span>'+parts[1].toUpperCase():info.name.toUpperCase();
+      });
+      document.title=document.title.replace(/KICK DAKAR|KICK\.DKR/g,info.name.toUpperCase());
+    }
+    if(info.wa){
+      const w=info.wa.replace(/[^0-9+]/g,'');
+      document.querySelectorAll('a[href*="wa.me"]').forEach(el=>{const m=el.href.split('?text=')[1]||'';el.href='https://wa.me/'+w+(m?'?text='+m:'');});
+    }
+    if(info.tt){
+      const h=info.tt.startsWith('@')?info.tt:'@'+info.tt;
+      document.querySelectorAll('a.tt-link,a[href*="tiktok.com/@"]').forEach(el=>el.href='https://tiktok.com/'+h);
+    }
+    if(info.ig){
+      const ig=info.ig.startsWith('@')?info.ig.slice(1):info.ig;
+      document.querySelectorAll('a.ig-link,a[href*="instagram.com"]').forEach(el=>el.href='https://instagram.com/'+ig);
+    }
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>
