@@ -25,11 +25,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .btn-wa:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,0.35);}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
 .hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;}
-.mob-menu{position:fixed;inset:0;background:var(--black);z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);}
+.mob-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1999;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.mob-overlay.open{opacity:1;pointer-events:all;}
+.mob-menu{position:fixed;top:0;right:0;bottom:0;width:280px;background:var(--dark);z-index:2000;display:flex;flex-direction:column;padding:20px;gap:4px;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);border-left:1px solid var(--border);box-shadow:-20px 0 60px rgba(0,0,0,0.5);}
 .mob-menu.open{transform:translateX(0);}
-.mob-menu a{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:4px;color:var(--white);text-decoration:none;}
-.mob-menu a:hover{color:var(--accent);}
-.mob-close{position:absolute;top:24px;right:24px;background:none;border:1px solid var(--border);color:var(--gray);width:40px;height:40px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.mob-menu a{font-family:'Barlow',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--lightgray);text-decoration:none;padding:13px 16px;border-radius:8px;transition:all 0.2s;border:1px solid transparent;}
+.mob-menu a:hover{background:var(--card);border-color:var(--border);color:var(--white);}
+.mob-menu-logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;margin-bottom:12px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.mob-menu-logo span{color:var(--accent);}
+.mob-close{background:none;border:1px solid var(--border);color:var(--gray);width:36px;height:36px;border-radius:8px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;margin-bottom:4px;}
+.mob-menu-footer{margin-top:auto;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;}
 
 .page-header{padding:140px 48px 80px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
 .page-header::before{content:'FAQ';position:absolute;font-family:'Bebas Neue',sans-serif;font-size:300px;color:rgba(255,255,255,0.02);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;}
@@ -119,14 +124,19 @@ footer{background:#080808;border-top:1px solid var(--border);padding:60px 48px 3
   </div>
 </nav>
 
+<div class="mob-overlay" id="mobOverlay" onclick="closeMob()"></div>
 <div class="mob-menu" id="mobMenu">
-  <button class="mob-close" id="mobClose">✕</button>
+  <button class="mob-close" id="mobClose" onclick="closeMob()">✕</button>
+  <div class="mob-menu-logo">KICK<span>.</span>DKR</div>
   <a href="index.html" onclick="closeMob()">Home</a>
   <a href="catalog.html" onclick="closeMob()">Catalog</a>
   <a href="about.html" onclick="closeMob()">About</a>
   <a href="faq.html" onclick="closeMob()">FAQ</a>
   <a href="delivery.html" onclick="closeMob()">Delivery</a>
-  <a href="https://wa.me/221XXXXXXXXX" target="_blank" style="background:var(--green);color:#000;padding:14px 38px;border-radius:50px;font-size:26px;">📱 Order</a>
+  <div class="mob-menu-footer">
+    <a href="admin-dashboard.html" target="_blank" style="color:var(--gray);font-size:13px;">⚙️ Admin</a>
+    <a href="https://wa.me/221XXXXXXXXX" target="_blank" style="background:var(--green);color:#000;padding:14px;border-radius:10px;font-size:14px;font-weight:800;text-align:center;">📱 Order on WhatsApp</a>
+  </div>
 </div>
 
 <div class="page-header">
@@ -255,9 +265,9 @@ function toggle(el){
   document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
   if(!isOpen) item.classList.add('open');
 }
-document.getElementById('ham').addEventListener('click',()=>{document.getElementById('mobMenu').classList.add('open');document.body.style.overflow='hidden';});
+document.getElementById('ham').addEventListener('click',()=>{document.getElementById('mobMenu').classList.add('open');document.getElementById('mobOverlay').classList.add('open');document.body.style.overflow='hidden';});
 document.getElementById('mobClose').addEventListener('click',closeMob);
-function closeMob(){document.getElementById('mobMenu').classList.remove('open');document.body.style.overflow='';}
+function closeMob(){document.getElementById('mobMenu').classList.remove('open');document.getElementById('mobOverlay').classList.remove('open');document.body.style.overflow='';}
 </script>
 
 
